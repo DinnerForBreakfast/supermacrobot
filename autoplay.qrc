@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>base/assets/Menu.qml</file>
+        <file>base/assets/MenuButton.qml</file>
+        <file>base/assets/NavButton.qml</file>
+        <file>base/assets/ScrollBar.qml</file>
+        <file>base/assets/images/scrollbar.png</file>
+        <file>base/menu/Apps.qml</file>
+        <file>base/menu/Buttons.qml</file>
+        <file>base/menu/MainMenu.qml</file>
+        <file>base/menu/Networking.qml</file>
+        <file>base/menu/Record.qml</file>
+        <file>base/menu/Settings.qml</file>
+    </qresource>
+</RCC>
