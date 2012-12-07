@@ -4,6 +4,7 @@
 #include <QObject>
 #include "keypacket.h"
 #include "mousepacket.h"
+#include "clickpacket.h"
 
 #define CONFIG_NEW_DEVICE			1
 #define MANUFACTURER_ID				2
@@ -30,6 +31,7 @@ public:
 private:
 	KeyPacket kp;
 	MousePacket mp;
+	ClickPacket cp;
 signals:
 
 public slots:

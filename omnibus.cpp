@@ -51,4 +51,5 @@ void OmniBus::sendPacket(BusPacket p)
 	for(int i = 0;i < si.itemSize;i++){
 		write(si.item[i]);
 	}
+	free(si.item);
 }

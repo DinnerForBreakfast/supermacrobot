@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     busprotocol.cpp \
     mousepacket.cpp \
     keypacket.cpp \
-    buspacket.cpp
+    buspacket.cpp \
+    clickpacket.cpp
 
 HEADERS  += autoplay.h \
 #    DeclarativeMimeData.h \
@@ -54,7 +55,8 @@ HEADERS  += autoplay.h \
     busprotocol.h \
     mousepacket.h \
     keypacket.h \
-    buspacket.h
+    buspacket.h \
+    clickpacket.h
 
 FORMS    += autoplay.ui
 
@@ -87,8 +89,6 @@ OTHER_FILES += \
     base/menu/Settings.qml \
     base/menu/Record.qml \
     base/menu/Apps.qml
-
-CCFLAG += -fpack-struct
 
 #CONFIG  += link_pkgconfig
 #PKGCONFIG += libusb-1.0

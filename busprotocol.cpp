@@ -20,8 +20,8 @@ void BusProtocol::sendKeyEvent(int code, int value) {
 
 void BusProtocol::sendMouseClick(int code, int value)
 {
-	kp.id = MOUSE_CLICK_EVENT;
-	kp.code = code;
-	kp.value = value;
-	this->sendPacket(kp);
+	cp.id = MOUSE_CLICK_EVENT;
+	cp.code = code;
+	cp.value = value;
+	this->sendPacket(cp);
 }
