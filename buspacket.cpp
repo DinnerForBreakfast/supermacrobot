@@ -2,5 +2,5 @@
 
 BusPacket::BusPacket() : Serializable()
 {
-	registerItem((void*)id, sizeof(id));
+	registerItem((void*)&this->id, sizeof(id));
 }

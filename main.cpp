@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
 
 	QObject::connect(em, SIGNAL(mouseMove(int,int)), bus, SLOT(sendMouseMove(int,int)));
 	QObject::connect(em, SIGNAL(keyEvent(int,int)), bus, SLOT(sendKeyEvent(int,int)));
+	QObject::connect(em, SIGNAL(mouseClick(int,int)), bus, SLOT(sendMouseClick(int,int)));
 	//Cpcap *pcap = new Cpcap();
 	//pcap->run();
 	mouse->start();
