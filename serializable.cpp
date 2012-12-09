@@ -24,7 +24,11 @@ int Serializable::getSize()
 void Serializable::initSerialized(Serialized *s)
 {
 	s->item = (char*)malloc(getSize());
+<<<<<<< HEAD
 	s->itemSize = 0;
+=======
+	s->itemSize = me.itemSize;
+>>>>>>> Fixed Serializable.
 }
 
 void Serializable::destroySerialized(Serialized *s)
