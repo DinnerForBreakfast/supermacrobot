@@ -2,7 +2,6 @@
 #include "serializable.h"
 #include <stdlib.h>
 #include <string.h>
-#include <QDebug>
 
 Serializable::Serializable()
 {
