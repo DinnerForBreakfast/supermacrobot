@@ -8,7 +8,7 @@ class ClickPacket : public BusPacket
 public:
 	ClickPacket();
 	uint8_t code;
-	int value;
+	uint8_t value;
 };
 
 #endif // CLICKPACKET_H

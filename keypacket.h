@@ -9,7 +9,7 @@ class KeyPacket : public BusPacket
 public:
 	KeyPacket();
 	uint16_t code;
-	int value;
+	uint16_t value;
 };
 
 #endif // KEYPACKET_H
