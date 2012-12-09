@@ -27,11 +27,15 @@ class BusProtocol : public QObject
 public:
 	explicit BusProtocol(QObject *parent = 0);
 	~BusProtocol();
-	virtual void sendPacket(BusPacket p) = 0;
+	virtual void sendPacket(Serialized *si) = 0;
 private:
 	KeyPacket kp;
+	Serialized skp;
 	MousePacket mp;
+	Serialized smp;
 	ClickPacket cp;
+	Serialized scp;
+
 signals:
 
 public slots:

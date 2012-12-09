@@ -7,7 +7,7 @@
 
 typedef uint16_t szItem;
 
-struct SerialInfo {
+struct Serialized {
 	char *item;
 	szItem itemSize;
 };
@@ -16,15 +16,17 @@ class Serializable
 {
 public:
 	Serializable();
-	SerialInfo serialize();
-	void deserialize(SerialInfo s);
+	void serialize(Serialized *si);
+	void deserialize(Serialized *s);
 	void registerItem(void *item, szItem itemSize);
 	int getSize();
+	void initSerialized(Serialized *s);
+	void destroySerialized(Serialized *s);
 
 private:
 	char *offset;
-	SerialInfo me;
-	std::vector<SerialInfo> items;
+	Serialized me;
+	std::vector<Serialized> items;
 
 };
 

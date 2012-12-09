@@ -2,6 +2,7 @@
 #include "serializable.h"
 #include <stdlib.h>
 #include <string.h>
+#include <QDebug>
 
 Serializable::Serializable()
 {
@@ -9,7 +10,7 @@ Serializable::Serializable()
 }
 
 void Serializable::registerItem(void *item, szItem itemSize){
-	SerialInfo i;
+	Serialized i;
 	i.item = (char*)item;
 	i.itemSize = itemSize;
 	items.push_back(i);
@@ -21,25 +22,32 @@ int Serializable::getSize()
 	return me.itemSize;
 }
 
-SerialInfo Serializable::serialize()
+void Serializable::initSerialized(Serialized *s)
 {
-	me.item = (char*)malloc(me.itemSize);
-	this->offset = this->me.item;
-	std::vector<SerialInfo>::iterator i;
+	s->item = (char*)malloc(getSize());
+}
+
+void Serializable::destroySerialized(Serialized *s)
+{
+	free(s->item);
+}
+
+void Serializable::serialize(Serialized *s)
+{
+	this->offset = s->item;
+	std::vector<Serialized>::iterator i;
 	for(i = items.begin(); i != items.end(); i++){
 		memcpy(this->offset, i->item, i->itemSize);
 		this->offset += i->itemSize;
 	}
-	return me;
 }
 
-void Serializable::deserialize(SerialInfo s)
+void Serializable::deserialize(Serialized *s)
 {
-	this->offset = s.item;
-	std::vector<SerialInfo>::iterator i;
+	this->offset = s->item;
+	std::vector<Serialized>::iterator i;
 	for(i = items.begin(); i != items.end(); i++){
 		memcpy(i->item, this->offset, i->itemSize);
 		this->offset += i->itemSize;
 	}
-	free(s.item);
 }

@@ -46,12 +46,9 @@ void OmniBus::write(uint8_t data)
 	signalOut->setValue(0);
 }
 
-void OmniBus::sendPacket(BusPacket p)
+void OmniBus::sendPacket(Serialized *si)
 {
-	qDebug("packet size: %i", p.getSize());
-	SerialInfo si = p.serialize();
-	for(int i = 0;i < si.itemSize;i++){
-		write(si.item[i]);
+	for(int i = 0;i < si->itemSize;i++){
+		write(si->item[i]);
 	}
-	free(si.item);
 }

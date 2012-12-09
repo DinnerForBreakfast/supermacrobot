@@ -17,7 +17,7 @@ public:
 	~OmniBus();
 	uint8_t read();
 	void write(uint8_t data);
-	void sendPacket(BusPacket p);
+	void sendPacket(Serialized *si);
 
 private:
 	GPIO *pinsIn[BUS_WIDTH];
