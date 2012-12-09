@@ -24,6 +24,7 @@ int Serializable::getSize()
 void Serializable::initSerialized(Serialized *s)
 {
 	s->item = (char*)malloc(getSize());
+	s->itemSize = 0;
 }
 
 void Serializable::destroySerialized(Serialized *s)
@@ -34,10 +35,12 @@ void Serializable::destroySerialized(Serialized *s)
 void Serializable::serialize(Serialized *s)
 {
 	this->offset = s->item;
+	s->itemSize = 0;
 	std::vector<Serialized>::iterator i;
 	for(i = items.begin(); i != items.end(); i++){
 		memcpy(this->offset, i->item, i->itemSize);
 		this->offset += i->itemSize;
+		s->itemSize += i->itemSize;
 	}
 }
 
