@@ -2,21 +2,33 @@
 #define TRIGGERS_H
 
 #include <QObject>
-#include <Qt/qsqldatabase.h>
 #include "inputmeta.h"
+#include <QtSql>
+#include <vector>
+#include "dao.h"
 
-class Triggers : public QObject
+class Triggers : public DAO
 {
 	Q_OBJECT
+
 public:
-	explicit Triggers(QObject *parent = 0);
+	explicit Triggers(QString path);
 	~Triggers();
-	void setTrigger(input_event ie, QString file);
-	QString getTrigger (input_event ie);
-	bool isTrigger(input_event ie);
-	void delTrigger(input_event ie);
+	void setTrigger(input_event ie, QString path);
+	void delTrigger(input_event ie, QString path);
+	QSqlQuery* getTriggers();
+	QSqlQuery* getTrigger(input_event ie);
+
 private:
-	QSqlDatabase db;
+	QSqlQuery* create;
+	QSqlQuery* getAll;
+	QSqlQuery* get;
+	QSqlQuery* insert;
+	QSqlQuery* remove;
+
+	bool initDatabase();
+	void initQueries();
+
 signals:
 	
 public slots:

@@ -49,7 +49,6 @@ void OmniBus::write(uint8_t data)
 void OmniBus::sendPacket(Serialized *si)
 {
 	for(int i = 0;i < si->itemSize;i++){
-		qDebug("packet data:%i",si->item[i]);
 		write(si->item[i]);
 	}
 }

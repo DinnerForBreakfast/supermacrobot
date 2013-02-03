@@ -4,13 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core gui declarative
+QT       += core gui declarative sql
 
 TARGET = AutoPlay
 TEMPLATE = app
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
+
+DEFINES += __need_timeval
 
 SOURCES += main.cpp \
         autoplay.cpp \
@@ -33,7 +35,10 @@ SOURCES += main.cpp \
     mousepacket.cpp \
     keypacket.cpp \
     buspacket.cpp \
-    clickpacket.cpp
+    clickpacket.cpp \
+    script.cpp \
+    dao.cpp \
+    scriptplayer.cpp
 
 HEADERS  += autoplay.h \
 #    DeclarativeMimeData.h \
@@ -56,7 +61,10 @@ HEADERS  += autoplay.h \
     mousepacket.h \
     keypacket.h \
     buspacket.h \
-    clickpacket.h
+    clickpacket.h \
+    script.h \
+    dao.h \
+    scriptplayer.h
 
 FORMS    += autoplay.ui
 

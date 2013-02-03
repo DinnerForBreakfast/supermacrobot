@@ -1,35 +1,40 @@
 #include "triggers.h"
 
-Triggers::Triggers(QObject *parent) :
-	QObject(parent)
+Triggers::Triggers(QString path) : DAO(path){}
+
+Triggers::~Triggers(){}
+
+bool Triggers::initDatabase()
 {
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(":memory:");
-	if (!db.open()) {
-		qDebug("Failed to create database.");
-	}
+	QSqlQuery query("create table triggers(int type, code int,value int, path varchar(255))", db);
+	return query.exec();
 }
 
-Triggers::~Triggers()
+void Triggers::initQueries()
 {
-	if(db.isOpen()){
-		db.close();
-	}
+	getAll = new QSqlQuery("SELECT * FROM triggers", db);
+	get = new QSqlQuery("SELECT * FROM triggers WHERE code=:code AND value=:value", db);
+	insert = new QSqlQuery("INSERT INTO tiggers (code, value, path) VALUES ( ?, ?, ? )", db);
+	remove = new QSqlQuery("DELETE FROM triggers WHERE code=? AND value=? AND path=?", db);
 }
 
-void Triggers::setTrigger(input_event ie, QString file)
+void Triggers::setTrigger(input_event ie, QString path)
 {
+	//insert.bindValue(ie.code);
+	//insert.bindValue(ie.value);
+	//insert.bindValue(path);
+	//insert.exec();
 }
 
-QString Triggers::getTrigger(input_event ie)
+void Triggers::delTrigger(input_event ie, QString path)
 {
+	//remove.bindValue(ie.code);
+	//remove.bindValue(ie.value);
+	//remove.bindValue(path);
 }
 
-bool Triggers::isTrigger(input_event ie)
+QSqlQuery *Triggers::getTriggers()
 {
-	return false;
-}
-
-void Triggers::delTrigger(input_event ie)
-{
+	getAll->exec();
+	return getAll;
 }

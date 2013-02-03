@@ -1,7 +1,76 @@
 #include "ceventmanager.h"
-#include "inputmeta.h"
+#include <QDebug>
 
-CEventManager::CEventManager(QObject *parent) : QObject(parent) {
+CEventManager::CEventManager(QObject *parent) : QObject(parent)
+{
+	initDefaultKeymap();
+	recordState = false;
+	playbackState = false;
+	player = new ScriptPlayer();
+	QObject::connect(player, SIGNAL(inputEvent(QVariant)),this,SLOT(processEvent(QVariant)));
+	QObject::connect(player, SIGNAL(done()),this,SLOT(scriptFinished()));
+	recording = new std::vector<autoplay_event>();
+}
+
+CEventManager::~CEventManager(){
+	delete player;
+}
+
+void CEventManager::processEvent(QVariant qv)
+{
+	struct autoplay_event ae = qv.value<autoplay_event>();
+	time_event = ae.time.tv_sec * 1000000 + ae.time.tv_usec;
+	if(time_last_event == 0)time_last_event = time_event;
+	ae.delay = time_event - time_last_event;
+	time_last_event = time_event;
+	qDebug() << "type:"<< ae.type << ", code:" << ae.code << ", value:" << ae.value << ", delay:" << ae.delay;
+	if(ae.type == EV_REL){
+		if(ae.code == REL_X){
+			emit mouseMove(ae.value,0);
+			if(recordState)recording->push_back(ae);
+		}
+		if(ae.code == REL_Y){
+			emit mouseMove(0,ae.value);
+			if(recordState)recording->push_back(ae);
+		}
+	}
+	if(ae.type == EV_KEY){
+		if(ae.code == KEY_F1 && ae.value == 1){
+			recordState = !recordState;
+			qDebug() << "record state:" << recordState;
+			if(recordState){
+				recording->clear();
+			}
+		}else
+		if(ae.code == KEY_F2 && ae.value == 1){
+			playbackState = !playbackState;
+			qDebug() << "playback state:" << playbackState;
+			if(playbackState){
+				player->play(recording);
+			}
+			if(!playbackState){
+				player->halt();
+			}
+		}else{
+			if(keymap.find(ae.code) != keymap.end()){
+				emit keyEvent(keymap[ae.code],ae.value);
+			}
+			if(mousemap.find(ae.code) != mousemap.end()){
+				emit mouseClick(mousemap[ae.code],ae.value);
+			}
+			if(recordState)recording->push_back(ae);
+		}
+	}
+}
+
+void CEventManager::scriptFinished()
+{
+	playbackState = false;
+	qDebug() << "script finished";
+}
+
+void CEventManager::initDefaultKeymap()
+{
 	keymap[KEY_ESC] = ( 41  | 0x4000 );
 	keymap[KEY_1] = '1';
 	keymap[KEY_2] = '2';
@@ -94,21 +163,4 @@ CEventManager::CEventManager(QObject *parent) : QObject(parent) {
 	mousemap[BTN_LEFT] = 0;
 	mousemap[BTN_RIGHT] = 1;
 	mousemap[BTN_MIDDLE] = 2;
-}
-
-CEventManager::~CEventManager(){}
-
-void CEventManager::processEvent(QVariant qv){
-	struct input_event ie = qv.value<input_event>();
-	//qDebug(" type:%i, code:%i, value:%i",ie.type,ie.code,ie.value);
-	if(ie.type == EV_REL && ie.code == REL_X){emit mouseMove(ie.value,0);}
-	if(ie.type == EV_REL && ie.code == REL_Y){emit mouseMove(0,ie.value);}
-	if(ie.type == EV_KEY){
-		if(keymap.find(ie.code) != keymap.end()){
-			emit keyEvent(keymap[ie.code],ie.value);
-		}
-		if(mousemap.find(ie.code) != mousemap.end()){
-			emit mouseClick(mousemap[ie.code],ie.value);
-		}
-	}
 }
