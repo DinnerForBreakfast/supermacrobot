@@ -27,12 +27,11 @@ void CEventManager::processEvent(QVariant qv)
 	if(ae.type == EV_REL){
 		if(ae.code == REL_X){
 			emit mouseMove(ae.value,0);
-			if(recordState)recording->push_back(ae);
 		}
 		if(ae.code == REL_Y){
 			emit mouseMove(0,ae.value);
-			if(recordState)recording->push_back(ae);
 		}
+		if(recordState)recording->push_back(ae);
 	}
 	if(ae.type == EV_KEY){
 		if(ae.code == KEY_F1 && ae.value == 1){
@@ -159,6 +158,8 @@ void CEventManager::initDefaultKeymap()
 	keymap[KEY_KPENTER] = ( 88  | 0x4000 );
 	keymap[KEY_RIGHTCTRL] = ( 0x10 | 0x8000 );
 	keymap[KEY_KPSLASH] = ( 84  | 0x4000 );
+	keymap[KEY_LEFTMETA] = ( 0x08 | 0x8000 );
+	keymap[KEY_COMPOSE] = ( 0x80 | 0x8000 );
 
 	mousemap[BTN_LEFT] = 0;
 	mousemap[BTN_RIGHT] = 1;

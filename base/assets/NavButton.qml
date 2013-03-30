@@ -11,7 +11,7 @@ Rectangle {
     width: buttonLabel.width + 20; height: buttonLabel.height + 8
     border { width: 1; color: Qt.darker(activePalette.button) }
     smooth: true
-    radius: 8
+	radius: 16
     gradient: Gradient {
         GradientStop {
             position: 0

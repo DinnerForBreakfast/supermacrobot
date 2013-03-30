@@ -18,7 +18,7 @@ void Triggers::initQueries()
 	remove = new QSqlQuery("DELETE FROM triggers WHERE code=? AND value=? AND path=?", db);
 }
 
-void Triggers::setTrigger(input_event ie, QString path)
+void Triggers::setTrigger(autoplay_event ie, QString path)
 {
 	//insert.bindValue(ie.code);
 	//insert.bindValue(ie.value);
@@ -26,7 +26,7 @@ void Triggers::setTrigger(input_event ie, QString path)
 	//insert.exec();
 }
 
-void Triggers::delTrigger(input_event ie, QString path)
+void Triggers::delTrigger(autoplay_event ie, QString path)
 {
 	//remove.bindValue(ie.code);
 	//remove.bindValue(ie.value);

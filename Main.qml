@@ -11,18 +11,18 @@ Rectangle {
 
     Loader{
         id:screenLoader
-        y: 50
+		y: 80
         width: 800
-        height: 430
+		height: 400
         source:"qrc:base/menu/MainMenu.qml"
     }
 
-    NavButton {
+	NavButton {
         id: mainMenuButton
         x: 1
         y: 1
-        width: 140
-        height: 40
+		width: 152
+		height: 79
         text: "Main Menu"
         action: "qrc:base/menu/MainMenu.qml"
     }
@@ -31,15 +31,26 @@ Rectangle {
         id: backButton
         x: 153
         y: 1
-        height: 40
+		width: 92
+		height: 79
         text: "Back"
     }
 
     NavButton {
         id: upButton
-        x: 221
-        y: 1
-        height: 40
+		x: 245
+		y: 1
+		width: 77
+		height: 79
         text: "Up"
     }
+
+	NavButton {
+		id: recordButton
+		x: 347
+		y: 1
+		width: 106
+		height: 79
+		text: "Record"
+	}
 }

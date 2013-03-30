@@ -14,8 +14,8 @@ class Triggers : public DAO
 public:
 	explicit Triggers(QString path);
 	~Triggers();
-	void setTrigger(input_event ie, QString path);
-	void delTrigger(input_event ie, QString path);
+	void setTrigger(autoplay_event ie, QString path);
+	void delTrigger(autoplay_event ie, QString path);
 	QSqlQuery* getTriggers();
 	QSqlQuery* getTrigger(input_event ie);
 
