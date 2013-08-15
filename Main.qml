@@ -7,7 +7,21 @@ Rectangle {
     width: 800; height: 480
     color: "#000000"
 
+	Theme{
+		id:theme
+	}
+
     SystemPalette { id: activePalette }
+
+	function notifyRecordStateChanged(state){
+		console.log("firing notify");
+		if(state) recordButton.state = "on";
+		else recordButton.state = "";
+	}
+
+	function loadMenu(action){
+		screenLoader.source = "qrc:base/menu/"+action
+	}
 
     Loader{
         id:screenLoader
@@ -17,40 +31,34 @@ Rectangle {
         source:"qrc:base/menu/MainMenu.qml"
     }
 
-	NavButton {
+	MenuButton {
         id: mainMenuButton
         x: 1
         y: 1
 		width: 152
 		height: 79
+		fontSize: 20
         text: "Main Menu"
-        action: "qrc:base/menu/MainMenu.qml"
+		action: "MainMenu.qml"
     }
 
-    NavButton {
+	MenuButton {
         id: backButton
         x: 153
         y: 1
 		width: 92
 		height: 79
+		fontSize: 20
         text: "Back"
     }
 
-    NavButton {
-        id: upButton
-		x: 245
-		y: 1
-		width: 77
-		height: 79
-        text: "Up"
-    }
-
-	NavButton {
+	RecordButton {
 		id: recordButton
 		x: 347
 		y: 1
 		width: 106
 		height: 79
+		fontSize: 20
 		text: "Record"
 	}
 }

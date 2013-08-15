@@ -17,6 +17,7 @@ void ScriptPlayer::run()
 	i = recording->begin();
 	for(i = recording->begin(); i!= recording->end(); i++){
 		if(!go)break;
+		qDebug() << "playback delay:" << i->delay;
 		usleep(i->delay);
 		QVariant qv = QVariant::fromValue(*i);
 		emit inputEvent(qv);

@@ -1,40 +1,30 @@
-import Qt 4.7
+import QtQuick 1.1
 
 Rectangle {
     id: container
 
     property string text: "Button"
     property string action: ""
+	property alias textWidth: buttonLabel.width
+	property alias textHeight: buttonLabel.height
+	property alias fontSize: buttonLabel.font.pointSize
 
-    width: parent.width - 8; height: buttonLabel.height + 40
+	Text {
+		id: buttonLabel
+		color: "#ffffff"
+		anchors.centerIn: container
+		text: container.text
+		font.pointSize: 25
+	}
+
     border { width: 1; color: Qt.darker(activePalette.button) }
     smooth: true
     radius: 8
-    gradient: Gradient {
-        GradientStop {
-            position: 0
-            color: "#444444"
-        }
-
-        GradientStop {
-            position: 1
-            color: "#000000"
-        }
-    }
-
-    // color the button with a gradient
+	color: theme.color
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        onClicked: buttonClick(container.action)
-    }
-
-    Text {
-        id: buttonLabel
-        color: "#ffffff"
-        anchors.centerIn: container
-        text: container.text
-		font.pointSize: 25
+		onClicked: loadMenu(container.action)
     }
 }

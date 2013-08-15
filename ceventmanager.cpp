@@ -6,24 +6,21 @@ CEventManager::CEventManager(QObject *parent) : QObject(parent)
 	initDefaultKeymap();
 	recordState = false;
 	playbackState = false;
+	recording = new std::vector<autoplay_event>();
 	player = new ScriptPlayer();
 	QObject::connect(player, SIGNAL(inputEvent(QVariant)),this,SLOT(processEvent(QVariant)));
 	QObject::connect(player, SIGNAL(done()),this,SLOT(scriptFinished()));
-	recording = new std::vector<autoplay_event>();
 }
 
 CEventManager::~CEventManager(){
 	delete player;
 }
 
-void CEventManager::processEvent(QVariant qv)
-{
+void CEventManager::processEvent(QVariant qv) {
 	struct autoplay_event ae = qv.value<autoplay_event>();
-	time_event = ae.time.tv_sec * 1000000 + ae.time.tv_usec;
-	if(time_last_event == 0)time_last_event = time_event;
-	ae.delay = time_event - time_last_event;
-	time_last_event = time_event;
-	qDebug() << "type:"<< ae.type << ", code:" << ae.code << ", value:" << ae.value << ", delay:" << ae.delay;
+	time_event = calcUsec(ae.time.tv_sec, ae.time.tv_usec);
+	qDebug() << "time_event em:" << time_event;
+	qDebug() << "type:"<< ae.type << ", code:" << ae.code << ", value:" << ae.value << ", time:" << time_event;
 	if(ae.type == EV_REL){
 		if(ae.code == REL_X){
 			emit mouseMove(ae.value,0);
@@ -31,41 +28,72 @@ void CEventManager::processEvent(QVariant qv)
 		if(ae.code == REL_Y){
 			emit mouseMove(0,ae.value);
 		}
-		if(recordState)recording->push_back(ae);
+		if(recordState)this->record(ae);
 	}
 	if(ae.type == EV_KEY){
+		//hard record key
 		if(ae.code == KEY_F1 && ae.value == 1){
-			recordState = !recordState;
+			toggleRecordState();
 			qDebug() << "record state:" << recordState;
-			if(recordState){
-				recording->clear();
-			}
+
 		}else
-		if(ae.code == KEY_F2 && ae.value == 1){
-			playbackState = !playbackState;
-			qDebug() << "playback state:" << playbackState;
-			if(playbackState){
-				player->play(recording);
+			//hard playback key
+			if(ae.code == KEY_F2 && ae.value == 1){
+				playbackState = !playbackState;
+				qDebug() << "playback state:" << playbackState;
+				if(playbackState){
+					player->play(recording);
+				}
+				if(!playbackState){
+					player->halt();
+				}
+			}else{
+				if(keymap.find(ae.code) != keymap.end()){
+					emit keyEvent(keymap[ae.code],ae.value);
+					if(recordState)this->record(ae);
+				}
+				if(mousemap.find(ae.code) != mousemap.end()){
+					emit mouseClick(mousemap[ae.code],ae.value);
+					if(recordState)this->record(ae);
+				}
 			}
-			if(!playbackState){
-				player->halt();
-			}
-		}else{
-			if(keymap.find(ae.code) != keymap.end()){
-				emit keyEvent(keymap[ae.code],ae.value);
-			}
-			if(mousemap.find(ae.code) != mousemap.end()){
-				emit mouseClick(mousemap[ae.code],ae.value);
-			}
-			if(recordState)recording->push_back(ae);
-		}
 	}
+}
+
+void CEventManager::record(autoplay_event ae){
+	ae.delay = time_event - time_last_event;
+	qDebug() << "record delay: " << ae.delay;
+	time_last_event = time_event;
+	recording->push_back(ae);
 }
 
 void CEventManager::scriptFinished()
 {
 	playbackState = false;
 	qDebug() << "script finished";
+}
+
+void CEventManager::toggleRecordState()
+{
+	recordState = !recordState;
+	if(recordState == true){
+		qDebug() << "start recording!";
+		recording->clear();
+		timeval eventTime;
+		gettimeofday(&eventTime,NULL);
+		time_event = calcUsec(eventTime.tv_sec,eventTime.tv_usec);
+		time_last_event = time_event;
+		qDebug() << "time_event:" << time_event;
+		emit recordingStart();
+	}else{
+		qDebug() <<"end recording!";
+		emit recordingEnd();
+	}
+	emit recordStateChanged(recordState);
+}
+
+uint64_t CEventManager::calcUsec(time_t secs, __suseconds_t usecs){
+	return (secs * 1000000) + usecs;
 }
 
 void CEventManager::initDefaultKeymap()

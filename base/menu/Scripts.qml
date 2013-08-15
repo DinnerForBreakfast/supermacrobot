@@ -10,6 +10,6 @@ Rectangle {
         y: 29
         width: 80
         height: 20
-        text: "Record Mode"
+		text: "Script List"
     }
 }

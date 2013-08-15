@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'autoplay.ui'
 **
-** Created: Mon Dec 3 04:18:58 2012
-**      by: Qt User Interface Compiler version 4.8.3
+** Created: Tue Jul 30 12:12:55 2013
+**      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -48,7 +48,7 @@ public:
 };
 
 namespace Ui {
-    class AutoPlay: public Ui_AutoPlay {};
+    class MainWindow: public Ui_AutoPlay {};
 } // namespace Ui
 
 QT_END_NAMESPACE

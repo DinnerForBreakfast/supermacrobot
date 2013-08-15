@@ -3,13 +3,9 @@ import "../assets"
 
 Item {
 
-    function menuClick(action){
-        screenLoader.source = "qrc:base/menu/"+action
-    }
-
     ListModel{
 
-        id:buttons
+		id:menulist
 
         ListElement{
 			label:"Apps"
@@ -20,9 +16,9 @@ Item {
 			file:"Triggers.qml"
 		}
         ListElement{
-			label:"Record"
-            file:"RecordMode.qml"
-        }
+			label:"Scripts"
+			file:"Scripts.qml"
+		}
         ListElement{
 			label:"Buttons"
 			file:"Buttons.qml"
@@ -35,7 +31,7 @@ Item {
 
     Menu {
         id: menu1
-        mdl:buttons
+		mdl:menulist
         x: 0
         y: 0
     }

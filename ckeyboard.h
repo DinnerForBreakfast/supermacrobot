@@ -1,24 +1,20 @@
 #ifndef CKEYBOARD_H
 #define CKEYBOARD_H
 
+#include "device.h"
 #include <QVariant>
-#include <QThread>
 
-class CKeyboard : public QThread {
+class CKeyboard : public Device {
 	Q_OBJECT
 public:
-	explicit CKeyboard(QObject *parent = 0);
+	CKeyboard(const char *devnode, QObject *parent = 0);
 	~CKeyboard();
-	void run();
 
 private:
-	ssize_t keyboard;
+	void emitSignal(QVariant qv);
 
 signals:
 	void keyboardSignal(QVariant qv);
-
-public slots:
-
 };
 
 #endif // CKEYBOARD_H

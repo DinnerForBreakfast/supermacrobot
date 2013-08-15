@@ -1,23 +1,19 @@
 #ifndef CINPUT_H
 #define CINPUT_H
 
+#include <device.h>
 #include <QVariant>
-#include <QThread>
 
-class Cmouse : public QThread {
+class Cmouse : public Device {
 	Q_OBJECT
 public:
-	explicit Cmouse(QObject *parent = 0);
+	Cmouse(const char *devnode, QObject *parent = 0);
 	~Cmouse();
-	void run();
 
 private:
-	ssize_t mouse;
+	void emitSignal(QVariant qv);
 
 signals:
 	void mouseSignal(QVariant qv);
-
-public slots:
-
 };
 #endif // CINPUT_H

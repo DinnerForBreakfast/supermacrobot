@@ -1,14 +1,14 @@
-import Qt 4.7
+import QtQuick 1.1
 
 Item {
 
     property variant mdl
-    property Component btns : MenuButton{
+	property Component btns : MenuButton {
         text: label
         action: file
+		width: parent.width - 8
+		height: textHeight + 40
     }
-
-    function buttonClick(action){menuClick(action)}
 
     ListView {
         id: menu
